@@ -34,12 +34,11 @@ function $(selector) {
 }
 
 function submitForm(e) {
-  console.warn("submit", e);
   e.preventDefault();
-  var promotion = document.querySelector("input[name=promotion]").value;
-  var Members = document.querySelector("input[name=Members]").value;
-  var Name = document.querySelector("input[name=Name]").value;
-  var URL = document.querySelector("input[name=URL]").value;
+  const promotion = $("input[name=promotion]").value;
+  const Members = $("input[name=Members]").value;
+  const Name = $("input[name=Name]").value;
+  const URL = $("input[name=URL]").value;
 
   var user = {
     promotion: promotion,
@@ -51,7 +50,7 @@ function submitForm(e) {
 }
 
 function initEvents() {
-  var form = document.getElementById("EditForm");
+  const form = document.getElementById("EditForm");
   form.addEventListener("submit", submitForm);
 }
 
