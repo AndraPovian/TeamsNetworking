@@ -1,9 +1,10 @@
 function loadUsers() {
   fetch("users.json")
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (users) {
+    .then((r) => r.json())
+    //.then(function (response) {
+    // return response.json();
+    //})
+    .then((users) => {
       displayUsers(users);
     });
 }
@@ -40,7 +41,7 @@ function submitForm(e) {
   const Name = $("input[name=Name]").value;
   const URL = $("input[name=URL]").value;
 
-  var user = {
+  const user = {
     promotion: promotion,
     Members: Members,
     Name: Name,
