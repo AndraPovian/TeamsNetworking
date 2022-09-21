@@ -14,6 +14,7 @@ function displayTeams(teams) {
       <td>${teams[i].members}</td>
       <td>${teams[i].name}</td>
       <td><a href="${teams[i].url}">link</a></td>
+      <td> x e </td>
     </tr>`;
   }
 }
