@@ -1,77 +1,65 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teams job related nerworking</title>
+    <link rel="stylesheet" href="style.css" />
+    <title>Teams-Networking</title>
   </head>
-  <form action="" method="post" id="EditForm">
+
+  <form action="" method="post" id="editForm">
     <body>
-      <section>
-        <div id="tabel" class="page">
-          <h2>Teams job related nerworking</h2>
-          <table
-            id="tabel"
-            border="1"
-            style="
-              border: 1px solid rgb(216, 189, 200);
-              outline-style: solid;
-              outline-color: rgb(180, 13, 41);
-              outline-width: 4px;
-            "
-          >
-            <thead>
-              <tr>
-                <th>Group</th>
-                <th>Members</th>
-                <th>Project Name</th>
-                <th>Project URL</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
+      <div>
+        <h2>Teams Networking</h2>
+      </div>
 
-            <tfoot>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Enter Group"
-                  name="promotion"
-                  required
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Enter Members"
-                  name="Members"
-                  required
-                />
-              </td>
+      <table border="10" id="table">
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Members</th>
+            <th>Project Name</th>
+            <th>Project URL</th>
+          </tr>
+        </thead>
 
-              <td>
-                <input
-                  type="text"
-                  placeholder="Project Name"
-                  name="Name"
-                  required
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Project URL"
-                  name="URL"
-                  required
-                />
-              </td>
-              <td>
-                <button type="submit">💾</button>
-              </td>
-            </tfoot>
-          </table>
-        </div>
-      </section>
+        <tbody id="tbody"></tbody>
+
+        <tfoot>
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Enter Group"
+                name="promotion"
+                required
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="Enter members"
+                name="members"
+                required
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                required
+              />
+            </td>
+            <td>
+              <input type="text" placeholder="Enter url" name="url" required />
+            </td>
+            <td>
+              <button type="submit">💾</button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </body>
   </form>
   <script src="index.js"></script>
