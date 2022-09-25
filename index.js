@@ -23,6 +23,16 @@ function $(selector) {
   return document.querySelector(selector);
 }
 
+function createTeamRequest(team){
+  return fetch("http://localhost:3000/teams-json/create", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(team),
+});
+}
+
 function submitform(e) {
   e.preventDefault();
   const promotion = $("input[name=promotion]").value;
@@ -36,7 +46,15 @@ function submitform(e) {
     name: name,
     url: url,
   };
-  console.warn("adauga in teams.json", JSON.stringify(team));
+ createTeamRequest(team)
+    .then((r) => r.json())
+    .then(status => {
+    console.warn('status', status);
+    if (status.success){
+      location.reload();
+    }    
+ });
+ 
 }
 
 function initEvents() {
