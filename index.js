@@ -13,11 +13,15 @@ function displayTeams(teams) {
       <td>${teams[i].promotion}</td>
       <td>${teams[i].members}</td>
       <td>${teams[i].name}</td>
-      <td><a href="${teams[i].url}">link</a></td>
-      <td> x e </td>
+      <td><a href="${teams[i].url}" target="_blank">link</a></td>
+  
+      <td> 
+        <a href="#" data-id="${teams.id}" class="delete-btn">❌</a>
+      </td>
     </tr>`;
   }
 }
+
 
 function $(selector) {
   return document.querySelector(selector);
@@ -61,6 +65,13 @@ function initEvents() {
   const form = document.getElementById("editForm");
   console.warn("form", form);
   form.addEventListener("submit", submitform);
+
+  form.querySelector("tbody").addEventListener("click", e => {    
+    if (e.target.matches("a.delete-btn")) {
+      const id = e.target.getAttribute("data-id");
+      console.warn("click pe link", id);
+    }
+  });
 }
 
 loadTeams();
