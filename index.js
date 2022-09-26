@@ -30,12 +30,12 @@ function $(selector) {
 
 function createTeamRequest(team){
   return fetch("http://localhost:3000/teams-json/create", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(team),
-}).then((r) => r.json());
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(team),
+  }).then((r) => r.json());
 }
 
 function removeTeamRequest (id) {  
