@@ -2,13 +2,14 @@ function loadTeams() {
   fetch("http://localhost:3000/teams-json")
     .then((r) => r.json() )
     .then((teams) => {
+      console.log ("intra");
       displayTeams(teams);
     });
 }
 
 function displayTeams(teams) {
-  for (i = 0; i < teams.length; i++) {
-    console.log(teams[i]);
+  document.getElementById("tbody").innerHTML = "";
+  for (i = 0; i < teams.length; i++)  {
     document.getElementById("tbody").innerHTML += `<tr>
       <td>${teams[i].promotion}</td>
       <td>${teams[i].members}</td>
@@ -16,7 +17,7 @@ function displayTeams(teams) {
       <td><a href="${teams[i].url}" target="_blank">link</a></td>
   
       <td> 
-        <a href="#" data-id="${teams.id}" class="delete-btn">❌</a>
+        <a href="#" data-id="${teams[i].id}" class="delete-btn">❌</a>
       </td>
     </tr>`;
   }
@@ -31,11 +32,22 @@ function createTeamRequest(team){
   return fetch("http://localhost:3000/teams-json/create", {
   method: "POST",
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   body: JSON.stringify(team),
-});
+}).then((r) => r.json());
 }
+
+function removeTeamRequest (id) {  
+  return fetch("http://localhost:3000/teams-json/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({id: id})    
+  }).then(r => r.json());
+}
+
 
 function submitform(e) {
   e.preventDefault();
@@ -50,29 +62,36 @@ function submitform(e) {
     name: name,
     url: url,
   };
+
  createTeamRequest(team)
     .then((r) => r.json())
     .then(status => {
-    console.warn('status', status);
-    if (status.success){
-      location.reload();
-    }    
- });
+      console.warn('status', status);
+      if (status.success){
+        location.reload();
+      }    
+    });
  
 }
 
 function initEvents() {
-  const form = document.getElementById("editForm");
-  console.warn("form", form);
+  const form = document.getElementById("editForm");  
   form.addEventListener("submit", submitform);
 
-  form.querySelector("tbody").addEventListener("click", e => {    
+  form.querySelector("tbody").addEventListener("click", (e) => {    
     if (e.target.matches("a.delete-btn")) {
       const id = e.target.getAttribute("data-id");
-      console.warn("click pe link", id);
+      removeTeamRequest(id).then(status => {        
+        if(status.success) {
+          loadTeams();
+        }
+      });
+        
     }
   });
 }
+  
+
 
 loadTeams();
 initEvents();
