@@ -1,6 +1,9 @@
 let allTeams = [];
 let editId;
 
+function $(selector) {
+  return document.querySelector(selector);
+}
 
 function loadTeams() {
   fetch("http://localhost:3000/teams-json")
@@ -28,11 +31,6 @@ function displayTeams(teams) {
   }
 }
 
-
-function $(selector) {
-  return document.querySelector(selector);
-}
-
 function createTeamRequest(team){
   return fetch("http://localhost:3000/teams-json/create", {
     method: "POST",
@@ -53,18 +51,29 @@ function removeTeamRequest (id) {
   }).then(r => r.json());
 }
 
+function updateTeamRequest(team){
+  return fetch("http://localhost:3000/teams-json/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(team)
+  }).then(r => r.json());
+}
+
 function getFormValues() {
   const promotion = $("input[name=promotion]").value;
   const members = $("input[name=members]").value;
   const name = $("input[name=name]").value;
   const url = $("input[name=url]").value;
 
-  const team = {
-    promotion: promotion,
-    members: members,
-    name: name,
-    url: url,
-  };
+  return {
+    promotion,
+    members,
+    name,
+    url,
+    id: ''
+  }
 }
 
 function setFormValues(team) {
@@ -72,27 +81,40 @@ function setFormValues(team) {
   $("input[name=members]").value = team.members;
   $("input[name=name]").value = team.name;
   $("input[name=url]").value = team.url;
-  
 }
 
-function submitform(e) {
+function resetFormValues() {
+  $("input[name=promotion]").value = null;
+  $("input[name=members]").value = null;
+  $("input[name=name]").value = null;
+  $("input[name=url]").value = null;
+}
+
+function submitForm(e) {
   e.preventDefault();
   
   const team = getFormValues();
 
   if (editId) {
-    console.warn("pls edit", editId, team);
-  } else {
-    createTeamRequest(teams)
-    .then((r) => r.json())
-    .then(status => {
-      console.warn('status', status);
+    team.id = editId;
+    updateTeamRequest(team).then(status => {      
       if (status.success){
-        location.reload();
+        $("#editForm").reset()
+        loadTeams();
+      }    
+    });
+  } else {
+    createTeamRequest(team)    
+    .then(status => {      
+      if (status.success){
+        $("#editForm").reset()
+        loadTeams();
       }    
     });
 
   }
+
+  resetFormValues();
 }
 
 function startEditTeam(id) {
@@ -102,8 +124,12 @@ function startEditTeam(id) {
 }
 
 function initEvents() {
-  const form = document.getElementById("editForm");  
-  form.addEventListener("submit", submitform);
+  const form = $("#editForm");  
+  form.addEventListener("submit", submitForm);
+  form.addEventListener("reset", () => {
+    console.warn ("reset");
+    editId = undefined;
+  })
 
   form.querySelector("tbody").addEventListener("click", (e) => {    
     if (e.target.matches("a.delete-btn")) {
