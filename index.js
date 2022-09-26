@@ -1,8 +1,12 @@
+let allTeams = [];
+let editId;
+
+
 function loadTeams() {
   fetch("http://localhost:3000/teams-json")
     .then((r) => r.json() )
     .then((teams) => {
-      console.log ("intra");
+      allTeams = teams;
       displayTeams(teams);
     });
 }
@@ -18,7 +22,8 @@ function displayTeams(teams) {
   
       <td> 
         <a href="#" data-id="${teams[i].id}" class="delete-btn">❌</a>
-      </td>
+        <a href="#" data-id="${teams[i].id}" class="edit-btn">✏️</a>
+      </td> 
     </tr>`;
   }
 }
@@ -48,9 +53,7 @@ function removeTeamRequest (id) {
   }).then(r => r.json());
 }
 
-
-function submitform(e) {
-  e.preventDefault();
+function getFormValues() {
   const promotion = $("input[name=promotion]").value;
   const members = $("input[name=members]").value;
   const name = $("input[name=name]").value;
@@ -62,8 +65,25 @@ function submitform(e) {
     name: name,
     url: url,
   };
+}
 
- createTeamRequest(team)
+function setFormValues(team) {
+  $("input[name=promotion]").value = team.promotion;
+  $("input[name=members]").value = team.members;
+  $("input[name=name]").value = team.name;
+  $("input[name=url]").value = team.url;
+  
+}
+
+function submitform(e) {
+  e.preventDefault();
+  
+  const team = getFormValues();
+
+  if (editId) {
+    console.warn("pls edit", editId, team);
+  } else {
+    createTeamRequest(teams)
     .then((r) => r.json())
     .then(status => {
       console.warn('status', status);
@@ -71,7 +91,14 @@ function submitform(e) {
         location.reload();
       }    
     });
- 
+
+  }
+}
+
+function startEditTeam(id) {
+  const teams = allTeams.find((team) => team.id === id);
+  setFormValues(teams);
+  editId = id;
 }
 
 function initEvents() {
@@ -87,9 +114,13 @@ function initEvents() {
         }
       });
         
+    } else if (e.target.matches("a.edit-btn")) {
+      const id = e.target.getAttribute("data-id");
+      startEditTeam(id)
     }
-  });
-}
+      });
+  };
+
   
 
 
