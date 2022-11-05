@@ -6,7 +6,7 @@ function $(selector) {
 }
 
 function loadTeams() {
-  fetch("data/teams.json")
+  fetch("http://localhost:3000/teams")
     .then((r) => r.json())
     .then((teams) => {
       allTeams = teams;
